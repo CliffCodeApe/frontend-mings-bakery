@@ -5,6 +5,7 @@
     let password = '';
     let formError = '';
     let successMessage = '';
+    let isLoading = false;
     
     onMount(() => {
         const params = new URLSearchParams(window.location.search);
@@ -15,6 +16,7 @@
 
     async function handleSubmit() {
         formError = '';
+        isLoading = true;
         try {
             const res = await fetch('http://127.0.0.1:8000/api/login', {
                 method: 'POST',
@@ -25,7 +27,6 @@
             });
 
             const data = await res.json();
-
             if (!res.ok) {
                 if (data.errors) {
                     formError = data.errors;
@@ -36,15 +37,21 @@
             }
 
             // Save JWT token to localStorage (or cookie if you prefer)
-            if (data.token) {
+            if (data.token && data.user) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user)); // assuming your backend returns user info
-                window.location.href = '/';
+                if (data.user.is_admin) {
+                    window.location.href = '/admin';
+                } else {
+                    window.location.href = '/';
+                }
             } else {
                 formError = 'No token received from server.';
             }
         } catch (error: any) {
             formError = error.message || 'An error occurred.';
+        } finally {
+            isLoading = false;
         }
     }
 </script>
@@ -79,8 +86,17 @@
                         class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400" />
                 </div>
                 <button type="submit"
-                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded transition">
-                    Sign In
+                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded transition flex items-center justify-center"
+                    disabled={isLoading}>
+                    {#if isLoading}
+                        <svg class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                        </svg>
+                        Signing In...
+                    {:else}
+                        Sign In
+                    {/if}
                 </button>
             </form>
             <p class="text-center mt-4 text-gray-600">

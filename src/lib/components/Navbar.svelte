@@ -57,12 +57,6 @@
             >
                 Login
             </a>
-            <a
-                href="/auth/register"
-                class="px-3 py-2 rounded transition-colors duration-200 text-gray-700 hover:bg-gray-200 hover:text-gray-900 { $page.url.pathname === '/auth/register' ? 'bg-gray-200 font-semibold' : '' }"
-            >
-                Register
-            </a>
         {/if}
     </div>
 </nav>
