@@ -11,7 +11,7 @@
 </script>
 
 <div class="fixed top-0 left-0 h-full w-[250px] bg-white shadow-lg flex flex-col p-6 z-30">
-    <h4 class="mb-8 text-xl font-bold text-yellow-700">Ming's Bakery</h4>
+    <h4 class="mb-8 text-xl font-bold text-yellow-700"><a href="/">Ming's Bakery</a></h4>
     <ul class="flex flex-col gap-2">
         <li>
             <a href="/admin" class="flex items-center px-4 py-2 rounded transition-colors

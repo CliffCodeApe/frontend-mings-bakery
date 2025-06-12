@@ -12,6 +12,7 @@
   let description = '';
   let category = '';
   let image: File | null = null;
+  let imagePreview: string | null = null;
 
   $: if (product && open) {
     name = product.name;
@@ -19,11 +20,21 @@
     description = product.description ?? '';
     category = product.category ?? '';
     image = null;
+    imagePreview = null;
   }
 
   function handleFileChange(event: Event) {
     const files = (event.target as HTMLInputElement).files;
     image = files && files.length > 0 ? files[0] : null;
+    if (image) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imagePreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(image);
+    } else {
+      imagePreview = null;
+    }
   }
 
   function handleSubmit(e: Event) {
@@ -71,14 +82,22 @@
           bind:value={category}
           required
         />
-        {#if product.image_url}
-            <div class="mb-2">
-                <img
-                    src={product.image_url}
-                    alt={product.name}
-                    class="w-32 h-32 object-cover rounded mx-auto"
-                />
-            </div>
+        {#if imagePreview}
+          <div class="mb-2">
+            <img
+              src={imagePreview}
+              alt="Preview"
+              class="w-32 h-32 object-cover rounded mx-auto"
+            />
+          </div>
+        {:else if product.image_url}
+          <div class="mb-2">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              class="w-32 h-32 object-cover rounded mx-auto"
+            />
+          </div>
         {/if}
         <input
           class="border px-3 py-2 rounded"
