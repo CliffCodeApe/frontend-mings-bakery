@@ -1,6 +1,21 @@
 <script lang="ts">
   import ProductModal from '$lib/components/ProductModal.svelte';
-  import type { Product } from './+page.ts';
+  import type { Product } from '$lib/stores/product';
+  import { cartItems } from '$lib/stores/cart';
+  import { showPopup } from '$lib/stores/toast';
+
+  function addToCart(product: Product, qty = 1) {
+    cartItems.update(items => {
+      const idx = items.findIndex(i => i.id === product.id);
+      if (idx !== -1) {
+        items[idx].quantity += qty;
+      } else {
+        items.push({ id: product.id, title: product.name, price: Number(product.price), quantity: qty });
+      }
+      showPopup('Produk berhasil ditambahkan di keranjang!');
+      return [...items];
+    });
+  }
 
   export let data: { products: Product[] };
   let selectedProduct: Product | null = null;
@@ -57,6 +72,7 @@
             <p class="text-gray-700 font-bold mb-2">Rp {product.price}</p>
             <button
               class="mt-auto bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded transition"
+              on:click={() => addToCart(product)}
             >
               Add to Cart
             </button>
@@ -67,12 +83,18 @@
   </main>
 
     {#if selectedProduct}
-    <ProductModal
-      title={selectedProduct.name}
-      price={`Rp ${selectedProduct.price}`}
-      imgSrc={selectedProduct.image_url ?? ''}
-      description={selectedProduct.description ?? ''}
-      on:close={() => (selectedProduct = null)}
-    />
+      <ProductModal
+        title={selectedProduct.name}
+        price={`Rp ${selectedProduct.price}`}
+        imgSrc={selectedProduct.image_url ?? ''}
+        description={selectedProduct.description ?? ''}
+        on:add={(e) => {
+          if (selectedProduct) {
+            addToCart(selectedProduct, e.detail.qty);
+          }
+          selectedProduct = null;
+        }}
+        on:close={() => (selectedProduct = null)}
+      />
   {/if}
 </div>

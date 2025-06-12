@@ -1,17 +1,6 @@
 import type { PageLoad } from './$types';
+import type { Product } from '$lib/stores/product';
 import { error } from '@sveltejs/kit';
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string | null;
-  price: string;
-  category: string;
-  image_url: string | null;
-  is_available: boolean;
-  created_at: string;
-  updated_at: string;
-}
 
 export const load: PageLoad = async ({ fetch }) => {
   try {
@@ -30,7 +19,7 @@ export const load: PageLoad = async ({ fetch }) => {
       throw error(500, { message: 'Invalid response format' });
     }
 
-    return { products: response.data };
+    return { products: response.data as Product[]};
   } catch (err) {
     if (err instanceof Error) {
       throw error(500, { message: err.message });

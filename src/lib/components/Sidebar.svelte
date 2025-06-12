@@ -22,9 +22,9 @@
             </a>
         </li>
         <li>
-            <a href="/admin/product-orders" class="flex items-center px-4 py-2 rounded transition-colors
+            <a href="/admin/order-management" class="flex items-center px-4 py-2 rounded transition-colors
                 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700
-                {activePage === 'product-orders' ? 'bg-yellow-100 font-semibold text-yellow-700' : ''}">
+                {activePage === 'order-management' ? 'bg-yellow-100 font-semibold text-yellow-700' : ''}">
                 <span class="material-icons-outlined mr-3 text-xl">assignment_turned_in</span>
                 Manajemen Pesanan
             </a>

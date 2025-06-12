@@ -3,7 +3,10 @@
     import { onMount } from 'svelte';
     import { user, loadUserFromStorage } from '$lib/stores/user';
     import { goto } from '$app/navigation';
+    import ShoppingCartModal from '$lib/components/ShoppingCartModal.svelte';
 
+    let showCart = false;
+    
     function logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -43,13 +46,22 @@
         {#if $user}
             <span class="italic text-gray-600">Welcome, {$user.name}</span>
             <button class="px-3 py-2 rounded transition-colors duration-200 text-gray-700 hover:bg-gray-200 hover:text-gray-900" on:click={logout}>Logout</button>
-            <a href="/cart" class="px-3 py-2 rounded text-yellow-700 hover:bg-yellow-100" title="Cart">
+            <a 
+                href="/cart" 
+                class="px-3 py-2 rounded text-yellow-700 hover:bg-yellow-100" 
+                title="Cart"
+                aria-label="Cart"
+                on:click|preventDefault={() => showCart = true}
+            >
                 <svg class="inline w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="9" cy="21" r="1"/>
                     <circle cx="20" cy="21" r="1"/>
                 </svg>
             </a>
+            {#if showCart}
+                <ShoppingCartModal on:click_outside={() => showCart = false} />
+            {/if}
         {:else}
             <a
                 href="/auth/login"

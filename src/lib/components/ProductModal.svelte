@@ -16,7 +16,6 @@
   }
 
   function addToCart() {
-    alert(`${qty} x ${title} added to cart!`);
     dispatch("add", { qty });
     dispatch("close");
   }

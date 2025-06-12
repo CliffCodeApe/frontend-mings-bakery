@@ -40,6 +40,9 @@
             if (data.token && data.user) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user)); // assuming your backend returns user info
+
+                document.cookie = `token=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+
                 if (data.user.is_admin) {
                     window.location.href = '/admin';
                 } else {
