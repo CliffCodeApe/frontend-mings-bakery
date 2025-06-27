@@ -14,7 +14,7 @@
   async function fetchOrders() {
     const token = localStorage.getItem('token');
     if (!token) return;
-    const res = await fetch('http://127.0.0.1:8000/api/orders/user', {
+    const res = await fetch('mings-bakery-production.up.railway.app/api/orders/user', {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (res.ok) {
@@ -59,7 +59,7 @@ async function checkout() {
     alert('Please fill all order details!');
     return;
   }
-  const res = await fetch('http://127.0.0.1:8000/api/orders/make', {
+  const res = await fetch('mings-bakery-production.up.railway.app/api/orders/make', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

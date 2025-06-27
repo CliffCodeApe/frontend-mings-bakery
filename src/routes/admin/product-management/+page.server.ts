@@ -5,7 +5,7 @@ import { error } from '@sveltejs/kit';
 
 
 export const load: PageServerLoad = async () => {
-    const res = await fetch('http://127.0.0.1:8000/api/products');
+    const res = await fetch('mings-bakery-production.up.railway.app/api/products');
     
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
@@ -50,7 +50,7 @@ export const actions: Actions = {
             backendForm.append('image', new File([image], image.name, { type: image.type }));
         }
 
-        const res = await fetch('http://127.0.0.1:8000/api/products', {
+        const res = await fetch('mings-bakery-production.up.railway.app/api/products', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -88,7 +88,7 @@ export const actions: Actions = {
             backendForm.append('image', new File([image], image.name, { type: image.type }));
         }
 
-        const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+        const res = await fetch(`mings-bakery-production.up.railway.app/api/products/${id}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -109,7 +109,7 @@ export const actions: Actions = {
         const id = formData.get('id');
         const token = formData.get('token') as string || '';
 
-        const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+        const res = await fetch(`mings-bakery-production.up.railway.app/api/products/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`

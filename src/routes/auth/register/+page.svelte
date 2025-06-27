@@ -11,7 +11,7 @@
         isLoading = true;
         formErrors = [];
         try {
-            const res = await fetch('http://127.0.0.1:8000/api/register', {
+            const res = await fetch('mings-bakery-production.up.railway.app/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({cookies}) => {
         throw error(401, { message: 'Unauthorized' });
     }
 
-    const res = await fetch('http://127.0.0.1:8000/api/orders/all', {
+    const res = await fetch('mings-bakery-production.up.railway.app/api/orders/all', {
         headers: {
             Authorization: `Bearer ${token}`
         }
