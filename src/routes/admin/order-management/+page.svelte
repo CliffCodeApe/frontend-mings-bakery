@@ -7,7 +7,7 @@
   // Contoh update status (panggil endpoint PATCH/PUT)
   async function updateStatus(orderId: number, status: string) {
         const token = localStorage.getItem('token');
-        const res = await fetch(`mings-bakery-production.up.railway.app/api/orders/${orderId}/status`, {
+        const res = await fetch(`https://mings-bakery-production.up.railway.app/api/orders/${orderId}/status`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

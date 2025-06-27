@@ -5,24 +5,21 @@ import { error } from '@sveltejs/kit';
 
 
 export const load: PageServerLoad = async () => {
-    const res = await fetch('mings-bakery-production.up.railway.app/api/products');
-    
+    const res = await fetch('https://mings-bakery-production.up.railway.app/api/products');
+    const response = await res.json(); // Only call .json() ONCE
+
     if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw error(res.status, {
-        message: errorData.message || 'Failed to fetch products'
-      });
+        throw error(res.status, {
+            message: response.message || 'Failed to fetch products'
+        });
     }
 
-    const response = await res.json();
-    
     if (!response?.data || !Array.isArray(response.data)) {
-      throw error(500, { message: 'Invalid response format' });
+        throw error(500, { message: 'Invalid response format' });
     }
 
-    return { products: response.data as Product[]};
+    return { products: response.data as Product[] };
 };
-
 export const actions: Actions = {
     // Tambah produk
     create: async ({ request }) => {
@@ -50,7 +47,7 @@ export const actions: Actions = {
             backendForm.append('image', new File([image], image.name, { type: image.type }));
         }
 
-        const res = await fetch('mings-bakery-production.up.railway.app/api/products', {
+        const res = await fetch('https://mings-bakery-production.up.railway.app/api/products', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -88,7 +85,7 @@ export const actions: Actions = {
             backendForm.append('image', new File([image], image.name, { type: image.type }));
         }
 
-        const res = await fetch(`mings-bakery-production.up.railway.app/api/products/${id}`, {
+        const res = await fetch(`https://mings-bakery-production.up.railway.app/api/products/${id}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -109,7 +106,7 @@ export const actions: Actions = {
         const id = formData.get('id');
         const token = formData.get('token') as string || '';
 
-        const res = await fetch(`mings-bakery-production.up.railway.app/api/products/${id}`, {
+        const res = await fetch(`https://mings-bakery-production.up.railway.app/api/products/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`

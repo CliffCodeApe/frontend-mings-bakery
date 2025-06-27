@@ -10,7 +10,7 @@ export async function loadUserFromStorage() {
     }
 
     try {
-        const res = await fetch('mings-bakery-production.up.railway.app/api/user', {
+        const res = await fetch('https://mings-bakery-production.up.railway.app/api/user', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
